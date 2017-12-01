@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 
 class ContactsController extends Controller
 {
+
     public function create()
     {
     	return view('contacts.create');
@@ -17,13 +18,14 @@ class ContactsController extends Controller
 
     public function store(ContactRequest $request)
     {
-    	$message=Message::create($request->only('name','email','message'));
 
-
+    	$message = Message::create($request->only('name','email','message'));
+    	
+   
     	$mailable = new ContactMessageCreated($message);
 
     	Mail::to(config('laracarte.admin_support_email'))
-    	      ->send(new ContactMessageCreated($message));
+    		  ->send(new ContactMessageCreated($message));
 
     	flashy('Nous vous repondrons dans les plus brefs delais!');
 

@@ -8,12 +8,12 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ContactMessageCreated extends Mailable
+class ContactMessageCreated extends Mailable  implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-   
-    public $msg; 
+    
+    public $msg;
 
 
     /**
@@ -23,7 +23,7 @@ class ContactMessageCreated extends Mailable
      */
     public function __construct(Message $msg)
     {
-        
+    ;
         $this->msg = $msg;
     }
 
@@ -34,6 +34,7 @@ class ContactMessageCreated extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.messages.created');
+        return $this->from($this->msg->email, $this->msg->name)
+                    ->markdown('emails.messages.created');
     }
 }
